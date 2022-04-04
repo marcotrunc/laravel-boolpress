@@ -2,19 +2,19 @@
   <section>
     <Header :title="title" />
     <div id="main" class="container">
-      <PostCard />
+      <PostCards :posts="posts" />
     </div>
   </section>
 </template>
 
 <script>
 import Header from "./Header.vue";
-import PostCard from "./posts/PostCard.vue";
+import PostCards from "./posts/PostCards.vue";
 export default {
   name: "App",
   components: {
     Header,
-    PostCard,
+    PostCards,
   },
   data() {
     return {
@@ -24,12 +24,16 @@ export default {
   },
   methods: {
     getPosts() {
-      axios("http://127.0.0.1:8000/api")
+      axios
+        .get("http://127.0.0.1:8000/api/posts")
         .then((res) => {
           this.posts = res.data;
         })
         .catch((error) => {
-          console.log(error);
+          console.error(error);
+        })
+        .then(() => {
+          console.log("Chiamata terminata");
         });
     },
   },
