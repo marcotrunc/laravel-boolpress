@@ -1,8 +1,10 @@
 <template>
   <section>
     <!-- Card -->
-    <div class="card my-4" v-for="post in posts" :key="post.id">
-      <div class="card-header">{{ post.category.label }}</div>
+    <div class="card my-4">
+      <div class="card-header">
+        <strong>Autore:</strong> {{ post.user.name }}
+      </div>
       <div class="card-body">
         <h5 class="card-title">
           {{ post.title }}
@@ -19,12 +21,14 @@
         <a href="#" class="btn btn-primary">Go somewhere</a>
         <div class="card-footer d-flex justify-content-between">
           <!-- Tags -->
-          <div class="tags">
-            <span
-              class="badge text-white"
-              :style="`background-color: ${post.tags.color}`"
-              >{{ post.tags.label }}</span
-            >
+          <div class="tags d-flex justify-content-center">
+            <div class="tag mr-2" v-for="tag in post.tags" :key="tag.id">
+              <span
+                class="badge text-white"
+                :style="`background-color: ${tag.color}`"
+                >{{ tag.label }}</span
+              >
+            </div>
           </div>
           <!-- date -->
           <div class="date">
@@ -39,7 +43,12 @@
 <script>
 export default {
   name: "PostCards",
-  props: ["posts"],
+  props: ["post"],
+  data() {
+    return {
+      selectedPage: 0,
+    };
+  },
   methods: {
     updateAt(date) {
       const newDate = new Date(date);
