@@ -2032,9 +2032,42 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "PostCards",
-  props: ["posts"]
+  props: ["posts"],
+  methods: {
+    updateAt: function updateAt(date) {
+      var newDate = new Date(date);
+      var day = newDate.getDate() < 10 ? "0" + newDate.getDate() : newDate.getDate();
+      var month = newDate.getMonth() < 10 ? "0" + newDate.getMonth() : newDate.getMonth();
+      var year = newDate.getFullYear();
+      var stringDate = "".concat(day, "/").concat(month, "/").concat(year);
+      return stringDate;
+    }
+  }
 });
 
 /***/ }),
@@ -37764,11 +37797,24 @@ var render = function () {
   return _c(
     "section",
     _vm._l(_vm.posts, function (post) {
-      return _c("div", { key: post.id, staticClass: "card" }, [
-        _c("div", { staticClass: "card-header" }, [_vm._v("Featured")]),
+      return _c("div", { key: post.id, staticClass: "card my-4" }, [
+        _c("div", { staticClass: "card-header" }, [
+          _vm._v(_vm._s(post.category.label)),
+        ]),
         _vm._v(" "),
         _c("div", { staticClass: "card-body" }, [
-          _c("h5", { staticClass: "card-title" }, [_vm._v(_vm._s(post.title))]),
+          _c("h5", { staticClass: "card-title" }, [
+            _vm._v("\n        " + _vm._s(post.title) + "\n        "),
+            _c(
+              "sub",
+              {
+                class: "badge badge-pill badge-" + post.category.color,
+                staticStyle: { "font-size": "0.6rem" },
+                attrs: { role: "button" },
+              },
+              [_vm._v(_vm._s(post.category.label) + "\n        ")]
+            ),
+          ]),
           _vm._v(" "),
           _c("p", { staticClass: "card-text" }, [
             _vm._v("\n        " + _vm._s(post.content) + "\n      "),
@@ -37777,6 +37823,30 @@ var render = function () {
           _c("a", { staticClass: "btn btn-primary", attrs: { href: "#" } }, [
             _vm._v("Go somewhere"),
           ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "card-footer d-flex justify-content-between" },
+            [
+              _c("div", { staticClass: "tags" }, [
+                _c(
+                  "span",
+                  {
+                    staticClass: "badge text-white",
+                    style: "background-color: " + post.tags.color,
+                  },
+                  [_vm._v(_vm._s(post.tags.label))]
+                ),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "date" }, [
+                _c("strong", [_vm._v("Modificato il:")]),
+                _vm._v(
+                  " " + _vm._s(_vm.updateAt(post.updated_at)) + "\n        "
+                ),
+              ]),
+            ]
+          ),
         ]),
       ])
     }),
