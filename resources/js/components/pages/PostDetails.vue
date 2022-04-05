@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import PostCard from "./PostCard.vue";
+import PostCard from "../posts/PostCard";
 export default {
   name: "PostDetails",
   components: {
@@ -19,7 +19,7 @@ export default {
   methods: {
     getPost() {
       axios
-        .get("http://127.0.0.1:8000/api/posts/post/1")
+        .get("http://127.0.0.1:8000/api/posts/post/" + this.$route.params.id)
         .then((res) => {
           this.post = res.data;
         })

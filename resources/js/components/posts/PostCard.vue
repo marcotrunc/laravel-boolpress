@@ -2,8 +2,14 @@
   <section>
     <!-- Card -->
     <div class="card my-4">
-      <div class="card-header">
-        <strong>Autore:</strong> {{ post.user.name }}
+      <div class="card-header d-flex justify-content-between">
+        <address><strong>Autore:</strong> {{ post.user.name }}</address>
+        <router-link
+          v-if="$route.path === '/'"
+          :to="{ name: 'post-details', params: { id: post.id } }"
+          class="btn btn-primary"
+          >Vedi</router-link
+        >
       </div>
       <div class="card-body">
         <h5 class="card-title">
@@ -18,7 +24,6 @@
         <p class="card-text">
           {{ post.content }}
         </p>
-        <a href="#" class="btn btn-primary">Go somewhere</a>
         <div class="card-footer d-flex justify-content-between mt-3">
           <!-- Tags -->
           <div class="tags d-flex justify-content-center">
