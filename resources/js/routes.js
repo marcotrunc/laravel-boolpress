@@ -18,7 +18,7 @@ const router = new VueRouter({
     // array delle rotte
     routes: [
         { path: '/', component: HomePage, name: 'home' },
-        { path: '/posts/post/:id', component: PostDetails, name: 'post-details' },
+        { path: '/posts/post/:slug', component: PostDetails, name: 'post-details' },
         { path: '*', component: NotFoundPage, name: 'not-found' }]
 });
 

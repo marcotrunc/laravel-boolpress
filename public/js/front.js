@@ -1981,6 +1981,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Header",
   props: ["title"]
@@ -2109,7 +2111,7 @@ __webpack_require__.r(__webpack_exports__);
     getPost: function getPost() {
       var _this = this;
 
-      axios.get("http://127.0.0.1:8000/api/posts/post/" + this.$route.params.id).then(function (res) {
+      axios.get("http://127.0.0.1:8000/api/posts/post/" + this.$route.params.slug).then(function (res) {
         _this.post = res.data;
       })["catch"](function (err) {
         console.error(err);
@@ -37897,14 +37899,44 @@ var render = function () {
     "nav",
     { staticClass: "navbar navbar-expand-lg navbar-light bg-light" },
     [
-      _c("span", { staticClass: "navbar-brand", attrs: { href: "#" } }, [
-        _vm._v(_vm._s(_vm.title)),
-      ]),
+      _c(
+        "router-link",
+        { staticClass: "navbar-brand", attrs: { to: { path: "/" } } },
+        [_vm._v("\n    " + _vm._s(_vm.title) + "\n  ")]
+      ),
       _vm._v(" "),
       _vm._m(0),
       _vm._v(" "),
-      _vm._m(1),
-    ]
+      _c(
+        "div",
+        {
+          staticClass: "collapse navbar-collapse",
+          attrs: { id: "navbarSupportedContent" },
+        },
+        [
+          _c("ul", { staticClass: "navbar-nav mr-auto" }, [
+            _c(
+              "li",
+              { staticClass: "nav-item" },
+              [
+                _c(
+                  "router-link",
+                  {
+                    staticClass: "nav-link",
+                    attrs: { to: { path: "/" }, role: "button" },
+                  },
+                  [_vm._v("\n          Home\n        ")]
+                ),
+              ],
+              1
+            ),
+          ]),
+          _vm._v(" "),
+          _vm._m(1),
+        ]
+      ),
+    ],
+    1
   )
 }
 var staticRenderFns = [
@@ -37932,43 +37964,25 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass: "collapse navbar-collapse",
-        attrs: { id: "navbarSupportedContent" },
-      },
-      [
-        _c("ul", { staticClass: "navbar-nav mr-auto" }, [
-          _c("li", { staticClass: "nav-item active" }, [
-            _c("span", { staticClass: "nav-link", attrs: { href: "#" } }, [
-              _vm._v("Home "),
-              _c("span", { staticClass: "sr-only" }, [_vm._v("(current)")]),
-            ]),
-          ]),
-        ]),
-        _vm._v(" "),
-        _c("form", { staticClass: "form-inline my-2 my-lg-0" }, [
-          _c("input", {
-            staticClass: "form-control mr-sm-2",
-            attrs: {
-              type: "search",
-              placeholder: "Search",
-              "aria-label": "Search",
-            },
-          }),
-          _vm._v(" "),
-          _c(
-            "button",
-            {
-              staticClass: "btn btn-outline-success my-2 my-sm-0",
-              attrs: { type: "submit" },
-            },
-            [_vm._v("\n        Search\n      ")]
-          ),
-        ]),
-      ]
-    )
+    return _c("form", { staticClass: "form-inline my-2 my-lg-0" }, [
+      _c("input", {
+        staticClass: "form-control mr-sm-2",
+        attrs: {
+          type: "search",
+          placeholder: "Search",
+          "aria-label": "Search",
+        },
+      }),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-outline-success my-2 my-sm-0",
+          attrs: { type: "submit" },
+        },
+        [_vm._v("\n        Search\n      ")]
+      ),
+    ])
   },
 ]
 render._withStripped = true
@@ -38156,7 +38170,10 @@ var render = function () {
                 {
                   staticClass: "btn btn-primary",
                   attrs: {
-                    to: { name: "post-details", params: { id: _vm.post.id } },
+                    to: {
+                      name: "post-details",
+                      params: { slug: _vm.post.slug },
+                    },
                   },
                 },
                 [_vm._v("Vedi")]
@@ -54311,7 +54328,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
     component: _components_pages_HomePage_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
     name: 'home'
   }, {
-    path: '/posts/post/:id',
+    path: '/posts/post/:slug',
     component: _components_pages_PostDetails_vue__WEBPACK_IMPORTED_MODULE_4__["default"],
     name: 'post-details'
   }, {

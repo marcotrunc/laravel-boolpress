@@ -6,7 +6,7 @@
         <address><strong>Autore:</strong> {{ post.user.name }}</address>
         <router-link
           v-if="$route.path === '/'"
-          :to="{ name: 'post-details', params: { id: post.id } }"
+          :to="{ name: 'post-details', params: { slug: post.slug } }"
           class="btn btn-primary"
           >Vedi</router-link
         >

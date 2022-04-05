@@ -1,6 +1,8 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <span class="navbar-brand" href="#">{{ title }}</span>
+    <router-link class="navbar-brand" :to="{ path: '/' }">
+      {{ title }}
+    </router-link>
     <button
       class="navbar-toggler"
       type="button"
@@ -15,10 +17,10 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <span class="nav-link" href="#"
-            >Home <span class="sr-only">(current)</span>
-          </span>
+        <li class="nav-item">
+          <router-link class="nav-link" :to="{ path: '/' }" role="button">
+            Home
+          </router-link>
         </li>
       </ul>
       <form class="form-inline my-2 my-lg-0">
