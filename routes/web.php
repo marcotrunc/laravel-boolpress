@@ -29,7 +29,9 @@ Route::middleware('auth')
             abort(404);
         })->where('any', '.*');
     });
-
-Route::get('{any?}', function () {
+Route::get('/', function () {
     return view('guest.home');
-})->where("any", ".*");
+});
+// Route::get('{any?}', function () {
+//     return view('guest.home');
+// })->where("any", ".*");
