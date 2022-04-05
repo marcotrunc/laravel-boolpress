@@ -1,5 +1,6 @@
 <template>
   <section>
+    <Loading v-if="!(posts.length > 0)" />
     <PostCard v-for="post in posts" :key="post.id" :post="post" />
     <div id="main-bottom" class="d-flex justify-content-center">
       <Pagination
@@ -14,11 +15,13 @@
 <script>
 import PostCard from "./PostCard.vue";
 import Pagination from "../generics/Pagination.vue";
+import Loading from "../generics/Loading.vue";
 export default {
   name: "PostsList",
   components: {
     PostCard,
     Pagination,
+    Loading,
   },
   data() {
     return {

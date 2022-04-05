@@ -1,15 +1,18 @@
 <template>
   <div>
+    <Loading v-if="!post" />
     <PostCard :post="post" />
   </div>
 </template>
 
 <script>
 import PostCard from "../posts/PostCard";
+import Loading from "../generics/Loading.vue";
 export default {
   name: "PostDetails",
   components: {
     PostCard,
+    Loading,
   },
   data() {
     return {
