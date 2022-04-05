@@ -19,7 +19,7 @@
           {{ post.content }}
         </p>
         <a href="#" class="btn btn-primary">Go somewhere</a>
-        <div class="card-footer d-flex justify-content-between">
+        <div class="card-footer d-flex justify-content-between mt-3">
           <!-- Tags -->
           <div class="tags d-flex justify-content-center">
             <div class="tag mr-2" v-for="tag in post.tags" :key="tag.id">
@@ -42,7 +42,7 @@
 
 <script>
 export default {
-  name: "PostCards",
+  name: "PostCard",
   props: ["post"],
   data() {
     return {
