@@ -1,6 +1,6 @@
 <template>
   <div>
-    <PostsList />
+    <PostsList :search="search" />
   </div>
 </template>
 
@@ -11,8 +11,10 @@ export default {
   components: {
     PostsList,
   },
+  props: {
+    search: { type: String },
+  },
 };
 </script>
-
 <style>
 </style>

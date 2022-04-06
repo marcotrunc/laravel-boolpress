@@ -65,4 +65,10 @@ class PostController extends Controller
     {
         //
     }
+    public function search($search)
+    {
+        $post = Post::where('title', $search)->with(['user', 'category', 'tags'])->first();
+        if (!$post) return response('Error 404', 404);
+        return response()->json($post);
+    }
 }

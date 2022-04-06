@@ -2,13 +2,12 @@
   <section>
     <Loading v-if="!(posts.length > 0)" />
     <PostCard v-for="post in posts" :key="post.id" :post="post" />
-    <div id="main-bottom" class="d-flex justify-content-center">
-      <Pagination
-        :last-page="lastPage"
-        @on-page="getPosts"
-        :pagination="pagination"
-      />
-    </div>
+    <Pagination
+      :last-page="lastPage"
+      @on-page="getPosts"
+      :pagination="pagination"
+      v-if="!search"
+    />
   </section>
 </template>
 
@@ -23,6 +22,7 @@ export default {
     Pagination,
     Loading,
   },
+  props: ["search"],
   data() {
     return {
       posts: [],
@@ -55,5 +55,3 @@ export default {
 };
 </script>
 
-<style>
-</style>

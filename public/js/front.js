@@ -1983,9 +1983,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Header",
-  props: ["title"]
+  props: ["title"],
+  data: function data() {
+    return {
+      textSearched: ""
+    };
+  }
 });
 
 /***/ }),
@@ -2049,6 +2057,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Pagination",
   props: ["pagination"]
@@ -2077,6 +2088,11 @@ __webpack_require__.r(__webpack_exports__);
   name: "HomePage",
   components: {
     PostsList: _posts_PostsList_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  props: {
+    search: {
+      type: String
+    }
   }
 });
 
@@ -2257,7 +2273,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 
 
@@ -2268,6 +2283,7 @@ __webpack_require__.r(__webpack_exports__);
     Pagination: _generics_Pagination_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
     Loading: _generics_Loading_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
+  props: ["search"],
   data: function data() {
     return {
       posts: [],
@@ -38608,7 +38624,48 @@ var render = function () {
             ),
           ]),
           _vm._v(" "),
-          _vm._m(1),
+          _c(
+            "form",
+            { staticClass: "form-inline my-2 my-lg-0" },
+            [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.textSearched,
+                    expression: "textSearched",
+                  },
+                ],
+                staticClass: "form-control mr-sm-2",
+                attrs: { type: "text", placeholder: "Cerca per Titolo..." },
+                domProps: { value: _vm.textSearched },
+                on: {
+                  input: function ($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.textSearched = $event.target.value
+                  },
+                },
+              }),
+              _vm._v(" "),
+              _c(
+                "router-link",
+                {
+                  staticClass: "btn btn-outline-success my-2 my-sm-0",
+                  attrs: {
+                    to: {
+                      name: "search",
+                      params: { search: _vm.textSearched },
+                    },
+                  },
+                },
+                [_vm._v("\n        Search\n      ")]
+              ),
+            ],
+            1
+          ),
         ]
       ),
     ],
@@ -38635,30 +38692,6 @@ var staticRenderFns = [
       },
       [_c("span", { staticClass: "navbar-toggler-icon" })]
     )
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("form", { staticClass: "form-inline my-2 my-lg-0" }, [
-      _c("input", {
-        staticClass: "form-control mr-sm-2",
-        attrs: {
-          type: "search",
-          placeholder: "Search",
-          "aria-label": "Search",
-        },
-      }),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-outline-success my-2 my-sm-0",
-          attrs: { type: "submit" },
-        },
-        [_vm._v("\n        Search\n      ")]
-      ),
-    ])
   },
 ]
 render._withStripped = true
@@ -38722,51 +38755,61 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("nav", { attrs: { "aria-label": "Page navigation example" } }, [
-    _c(
-      "ul",
-      { staticClass: "pagination" },
-      [
-        _vm.pagination.currentPage !== 1
-          ? _c("li", { staticClass: "page-item" }, [
-              _c("span", { staticClass: "page-link" }, [_vm._v("Previous")]),
-            ])
-          : _vm._e(),
-        _vm._v(" "),
-        _vm._l(_vm.pagination.lastPage, function (page) {
-          return _c(
-            "li",
-            {
-              key: page,
-              staticClass: "page-item",
-              class: { active: _vm.pagination.currentPage == page },
-              on: {
-                click: function ($event) {
-                  return _vm.$emit("on-page", page)
-                },
-              },
-            },
-            [
-              _c(
-                "span",
-                { staticClass: "page-link active", attrs: { role: "button" } },
-                [_vm._v(_vm._s(page))]
-              ),
-            ]
-          )
-        }),
-        _vm._v(" "),
-        _c("li", { staticClass: "page-item" }, [
-          _vm.pagination.lastPage > _vm.pagination.currentPage
-            ? _c("span", { staticClass: "page-link" }, [
-                _vm._v("\n        Next\n      "),
+  return _c(
+    "nav",
+    {
+      staticClass: "d-flex justify-content-center",
+      attrs: { "aria-label": "Page navigation example" },
+    },
+    [
+      _c(
+        "ul",
+        { staticClass: "pagination" },
+        [
+          _vm.pagination.currentPage !== 1
+            ? _c("li", { staticClass: "page-item" }, [
+                _c("span", { staticClass: "page-link" }, [_vm._v("Previous")]),
               ])
             : _vm._e(),
-        ]),
-      ],
-      2
-    ),
-  ])
+          _vm._v(" "),
+          _vm._l(_vm.pagination.lastPage, function (page) {
+            return _c(
+              "li",
+              {
+                key: page,
+                staticClass: "page-item",
+                class: { active: _vm.pagination.currentPage == page },
+                on: {
+                  click: function ($event) {
+                    return _vm.$emit("on-page", page)
+                  },
+                },
+              },
+              [
+                _c(
+                  "span",
+                  {
+                    staticClass: "page-link active",
+                    attrs: { role: "button" },
+                  },
+                  [_vm._v(_vm._s(page))]
+                ),
+              ]
+            )
+          }),
+          _vm._v(" "),
+          _c("li", { staticClass: "page-item" }, [
+            _vm.pagination.lastPage > _vm.pagination.currentPage
+              ? _c("span", { staticClass: "page-link" }, [
+                  _vm._v("\n        Next\n      "),
+                ])
+              : _vm._e(),
+          ]),
+        ],
+        2
+      ),
+    ]
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -38790,7 +38833,7 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [_c("PostsList")], 1)
+  return _c("div", [_c("PostsList", { attrs: { search: _vm.search } })], 1)
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -38990,20 +39033,12 @@ var render = function () {
         return _c("PostCard", { key: post.id, attrs: { post: post } })
       }),
       _vm._v(" "),
-      _c(
-        "div",
-        {
-          staticClass: "d-flex justify-content-center",
-          attrs: { id: "main-bottom" },
-        },
-        [
-          _c("Pagination", {
+      !_vm.search
+        ? _c("Pagination", {
             attrs: { "last-page": _vm.lastPage, pagination: _vm.pagination },
             on: { "on-page": _vm.getPosts },
-          }),
-        ],
-        1
-      ),
+          })
+        : _vm._e(),
     ],
     2
   )
@@ -55010,14 +55045,15 @@ __webpack_require__.r(__webpack_exports__);
 /*!*****************************************************!*\
   !*** ./resources/js/components/posts/PostsList.vue ***!
   \*****************************************************/
-/*! exports provided: default */
+/*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _PostsList_vue_vue_type_template_id_4405d5ba___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PostsList.vue?vue&type=template&id=4405d5ba& */ "./resources/js/components/posts/PostsList.vue?vue&type=template&id=4405d5ba&");
 /* harmony import */ var _PostsList_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./PostsList.vue?vue&type=script&lang=js& */ "./resources/js/components/posts/PostsList.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _PostsList_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _PostsList_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -55047,7 +55083,7 @@ component.options.__file = "resources/js/components/posts/PostsList.vue"
 /*!******************************************************************************!*\
   !*** ./resources/js/components/posts/PostsList.vue?vue&type=script&lang=js& ***!
   \******************************************************************************/
-/*! exports provided: default */
+/*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -55140,6 +55176,11 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
     path: '/',
     component: _components_pages_HomePage_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
     name: 'home'
+  }, {
+    path: '/search/:search',
+    component: _components_pages_HomePage_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
+    name: 'search',
+    props: true
   }, {
     path: '/posts/post/:slug',
     component: _components_pages_PostDetails_vue__WEBPACK_IMPORTED_MODULE_4__["default"],

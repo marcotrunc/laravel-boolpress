@@ -26,13 +26,16 @@
       <form class="form-inline my-2 my-lg-0">
         <input
           class="form-control mr-sm-2"
-          type="search"
-          placeholder="Search"
-          aria-label="Search"
+          type="text"
+          placeholder="Cerca per Titolo..."
+          v-model="textSearched"
         />
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+        <router-link
+          class="btn btn-outline-success my-2 my-sm-0"
+          :to="{ name: 'search', params: { search: textSearched } }"
+        >
           Search
-        </button>
+        </router-link>
       </form>
     </div>
   </nav>
@@ -43,5 +46,10 @@
 export default {
   name: "Header",
   props: ["title"],
+  data() {
+    return {
+      textSearched: "",
+    };
+  },
 };
 </script>

@@ -10,7 +10,10 @@ use App\Models\Post;
 use App\Models\Tag;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+use App\Mail\PublishedPostMail;
+
 
 class PostController extends Controller
 {
@@ -65,8 +68,13 @@ class PostController extends Controller
             $post->image = $img_path;
         }
         $post->save();
-
+        //Add any tags
         if (array_key_exists('tags', $data)) $post->tags()->attach($data['tags']);
+
+        // Send the mail
+        $mail = new PublishedPostMail($post);
+        $receiver = Auth::user()->email;
+        Mail::to($receiver)->send($mail);
 
         return redirect()->route('admin.posts.index')->with('message', 'Il nuovo post è stato creato con successo');
     }
