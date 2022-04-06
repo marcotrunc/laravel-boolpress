@@ -22,4 +22,5 @@ Route::namespace('Api')->group(function () {
     Route::get('/posts', 'Postcontroller@index');
     Route::get('/posts/post/{slug}', 'Postcontroller@show');
     Route::get('/posts/search/{search}', 'Postcontroller@search');
+    Route::post('/messages', 'MessageController@store');
 });
