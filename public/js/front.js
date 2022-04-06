@@ -2099,6 +2099,14 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _generics_Alert_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../generics/Alert.vue */ "./resources/js/components/generics/Alert.vue");
+/* harmony import */ var _generics_Loading_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../generics/Loading.vue */ "./resources/js/components/generics/Loading.vue");
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2145,10 +2153,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Contacts",
   components: {
-    Alert: _generics_Alert_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+    Alert: _generics_Alert_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
+    Loading: _generics_Loading_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   data: function data() {
     return {
@@ -2156,22 +2166,39 @@ __webpack_require__.r(__webpack_exports__);
         email: "",
         message: ""
       },
-      alert: ""
+      alert: "",
+      isLoading: false,
+      errors: {}
     };
+  },
+  computed: {
+    hasErrors: function hasErrors() {
+      return Object.keys(this.errors).length;
+    }
   },
   methods: {
     sendMail: function sendMail() {
       var _this = this;
 
+      this.alert = "";
+      this.isLoading = true;
       var params = {
         email: this.form.email,
         message: this.form.message
       };
-      axios.post("http://localhost:8000/api/messages", params).then(function (res) {
+      axios.post("http://localhost:8000/messages", params).then(function (res) {
         _this.form.email = "";
         _this.form.message = "";
         _this.alert = "Email inviata con successo";
-      })["catch"](function (err) {}).then(function (res) {});
+      })["catch"](function (err) {
+        //   console.error(err.response.status);
+        _this.errors = {
+          error: "Errore" + " " + err.response.status
+        }; //Only in dev
+      }).then(function () {
+        _this.isLoading = false;
+        console.log("Chiamata Terminata");
+      });
     }
   }
 });
@@ -38973,99 +39000,139 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("section", { staticClass: "my-5" }, [
-    _c("h2", [_vm._v("Contattaci")]),
-    _vm._v(" "),
-    _vm.alert
-      ? _c(
-          "div",
-          [
-            _c("Alert", { attrs: { type: "success" } }, [
-              _vm._v(_vm._s(_vm.alert)),
-            ]),
-          ],
-          1
-        )
-      : _vm._e(),
-    _vm._v(" "),
-    _c("div", { staticClass: "form" }, [
-      _c("div", { staticClass: "form-group" }, [
-        _c("label", { attrs: { for: "email" } }, [_vm._v("Email Indirizzo")]),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.form.email,
-              expression: "form.email",
-            },
-          ],
-          staticClass: "form-control",
-          attrs: { type: "email", id: "email" },
-          domProps: { value: _vm.form.email },
-          on: {
-            input: function ($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.$set(_vm.form, "email", $event.target.value)
-            },
-          },
-        }),
-        _vm._v(" "),
-        _c(
-          "small",
-          { staticClass: "form-text text-muted", attrs: { id: "emailHelp" } },
-          [_vm._v("\n        Inserisci qui la tua mail\n      ")]
-        ),
-        _vm._v(" "),
-        _c("div", { staticClass: "form-group" }, [
-          _c("label", { attrs: { for: "text-area" } }, [_vm._v("Messaggio")]),
-          _vm._v(" "),
-          _c("textarea", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.form.message,
-                expression: "form.message",
-              },
-            ],
-            staticClass: "form-control",
-            attrs: { id: "text-area", rows: "8" },
-            domProps: { value: _vm.form.message },
-            on: {
-              input: function ($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.$set(_vm.form, "message", $event.target.value)
-              },
-            },
-          }),
-          _vm._v(" "),
-          _c(
-            "small",
-            { staticClass: "form-text text-muted", attrs: { id: "emailHelp" } },
+  return _c(
+    "section",
+    { staticClass: "my-5" },
+    [
+      _c("h2", [_vm._v("Contattaci")]),
+      _vm._v(" "),
+      _vm.isLoading == true
+        ? _c("Loading")
+        : _c(
+            "section",
             [
-              _vm._v(
-                "\n          Inserisci qui il testo del messaggio\n        "
-              ),
-            ]
+              _vm.hasErrors || _vm.alert
+                ? _c(
+                    "Alert",
+                    { attrs: { type: _vm.hasErrors ? "danger" : "success" } },
+                    [
+                      _vm.alert
+                        ? _c("div", [_vm._v(_vm._s(_vm.alert))])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.hasErrors
+                        ? _c("div", [
+                            _c(
+                              "ul",
+                              _vm._l(_vm.errors, function (error, key) {
+                                return _c("li", { key: key }, [
+                                  _vm._v(_vm._s(error)),
+                                ])
+                              }),
+                              0
+                            ),
+                          ])
+                        : _vm._e(),
+                    ]
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _c("div", { staticClass: "form" }, [
+                _c("div", { staticClass: "form-group" }, [
+                  _c("label", { attrs: { for: "email" } }, [
+                    _vm._v("Email Indirizzo"),
+                  ]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.form.email,
+                        expression: "form.email",
+                      },
+                    ],
+                    staticClass: "form-control",
+                    attrs: { type: "email", id: "email" },
+                    domProps: { value: _vm.form.email },
+                    on: {
+                      input: function ($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.form, "email", $event.target.value)
+                      },
+                    },
+                  }),
+                  _vm._v(" "),
+                  _c(
+                    "small",
+                    {
+                      staticClass: "form-text text-muted",
+                      attrs: { id: "emailHelp" },
+                    },
+                    [_vm._v("\n          Inserisci qui la tua mail\n        ")]
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("label", { attrs: { for: "text-area" } }, [
+                      _vm._v("Messaggio"),
+                    ]),
+                    _vm._v(" "),
+                    _c("textarea", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.form.message,
+                          expression: "form.message",
+                        },
+                      ],
+                      staticClass: "form-control",
+                      attrs: { id: "text-area", rows: "8" },
+                      domProps: { value: _vm.form.message },
+                      on: {
+                        input: function ($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.form, "message", $event.target.value)
+                        },
+                      },
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "small",
+                      {
+                        staticClass: "form-text text-muted",
+                        attrs: { id: "emailHelp" },
+                      },
+                      [
+                        _vm._v(
+                          "\n            Inserisci qui il testo del messaggio\n          "
+                        ),
+                      ]
+                    ),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "d-flex justify-content-end" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-primary",
+                        on: { click: _vm.sendMail },
+                      },
+                      [_vm._v("Invia")]
+                    ),
+                  ]),
+                ]),
+              ]),
+            ],
+            1
           ),
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "d-flex justify-content-end" }, [
-          _c(
-            "button",
-            { staticClass: "btn btn-primary", on: { click: _vm.sendMail } },
-            [_vm._v("Invia")]
-          ),
-        ]),
-      ]),
-    ]),
-  ])
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
