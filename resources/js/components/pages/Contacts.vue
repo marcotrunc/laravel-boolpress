@@ -23,6 +23,7 @@
             class="form-control"
             id="email"
             v-model="form.email"
+            :class="{ 'is-invalid': errors.mail }"
           />
           <small id="emailHelp" class="form-text text-muted">
             Inserisci qui la tua mail
@@ -35,6 +36,7 @@
               id="text-area"
               rows="8"
               v-model="form.message"
+              :class="{ 'is-invalid': errors.message }"
             ></textarea>
             <small id="emailHelp" class="form-text text-muted">
               Inserisci qui il testo del messaggio
@@ -73,28 +75,47 @@ export default {
     },
   },
   methods: {
+    validation() {
+      const errors = {};
+      if (!this.form.email.trim())
+        errors.mail = "E' obbligatorio inserire la mail";
+      if (
+        !this.form.email.match(
+          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        )
+      )
+        errors.mail = "La mail non è valida";
+      if (!this.form.message.trim())
+        errors.message = "Inserisci il testo del messaggio ";
+
+      this.errors = errors;
+    },
     sendMail() {
-      this.alert = "";
-      this.isLoading = true;
-      const params = {
-        email: this.form.email,
-        message: this.form.message,
-      };
-      axios
-        .post("http://localhost:8000/messages", params)
-        .then((res) => {
-          this.form.email = "";
-          this.form.message = "";
-          this.alert = "Email inviata con successo";
-        })
-        .catch((err) => {
-          //   console.error(err.response.status);
-          this.errors = { error: "Errore" + " " + err.response.status }; //Only in dev
-        })
-        .then(() => {
-          this.isLoading = false;
-          console.log("Chiamata Terminata");
-        });
+      this.validation();
+      if (!this.hasErrors) {
+        this.isLoading = true;
+        this.isAlert = "";
+        const params = {
+          email: this.form.email,
+          message: this.form.message,
+        };
+        axios
+          .post("http://localhost:8000/api/messages", params)
+          .then((res) => {
+            this.form.email = "";
+            this.form.message = "";
+            this.alert = "Email inviata con successo";
+          })
+          .catch((err) => {
+            //   console.error(err.response.status);
+            //   this.errors = { error: "Errore" + " " + err.response.status }; //Only in dev
+            this.errors = { error: "Si è verificato un errore" };
+          })
+          .then(() => {
+            this.isLoading = false;
+            console.log("Chiamata Terminata");
+          });
+      }
     },
   },
 };

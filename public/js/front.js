@@ -2152,6 +2152,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2177,28 +2179,40 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
+    validation: function validation() {
+      var errors = {};
+      if (!this.form.email.trim()) errors.mail = "E' obbligatorio inserire la mail";
+      if (!this.form.email.match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)) errors.mail = "La mail non è valida";
+      if (!this.form.message.trim()) errors.message = "Inserisci il testo del messaggio ";
+      this.errors = errors;
+    },
     sendMail: function sendMail() {
       var _this = this;
 
-      this.alert = "";
-      this.isLoading = true;
-      var params = {
-        email: this.form.email,
-        message: this.form.message
-      };
-      axios.post("http://localhost:8000/messages", params).then(function (res) {
-        _this.form.email = "";
-        _this.form.message = "";
-        _this.alert = "Email inviata con successo";
-      })["catch"](function (err) {
-        //   console.error(err.response.status);
-        _this.errors = {
-          error: "Errore" + " " + err.response.status
-        }; //Only in dev
-      }).then(function () {
-        _this.isLoading = false;
-        console.log("Chiamata Terminata");
-      });
+      this.validation();
+
+      if (!this.hasErrors) {
+        this.isLoading = true;
+        this.isAlert = "";
+        var params = {
+          email: this.form.email,
+          message: this.form.message
+        };
+        axios.post("http://localhost:8000/api/messages", params).then(function (res) {
+          _this.form.email = "";
+          _this.form.message = "";
+          _this.alert = "Email inviata con successo";
+        })["catch"](function (err) {
+          //   console.error(err.response.status);
+          //   this.errors = { error: "Errore" + " " + err.response.status }; //Only in dev
+          _this.errors = {
+            error: "Si è verificato un errore"
+          };
+        }).then(function () {
+          _this.isLoading = false;
+          console.log("Chiamata Terminata");
+        });
+      }
     }
   }
 });
@@ -39053,6 +39067,7 @@ var render = function () {
                       },
                     ],
                     staticClass: "form-control",
+                    class: { "is-invalid": _vm.errors.mail },
                     attrs: { type: "email", id: "email" },
                     domProps: { value: _vm.form.email },
                     on: {
@@ -39089,6 +39104,7 @@ var render = function () {
                         },
                       ],
                       staticClass: "form-control",
+                      class: { "is-invalid": _vm.errors.message },
                       attrs: { id: "text-area", rows: "8" },
                       domProps: { value: _vm.form.message },
                       on: {
